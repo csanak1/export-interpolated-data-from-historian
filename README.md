@@ -3,4 +3,4 @@ Super simple (and quite dumb) WinForms app to query and export interpolated tag 
 
 Might be helpful to someone else to query historical values.
 
-![Alt text](/preview.jpg?raw=true "Optional Title")
+![Alt text](/preview.jpg?raw=true "Preview")
