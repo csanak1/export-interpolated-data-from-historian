@@ -1,3 +1,6 @@
 # Export interpolated tag values from Proficy Historian
-Simple WinForms app to query and export interpolated tag values from Proficy Historian (using Proficy.Historian.ClientAccess.API) as CSV file
+Super simple (and quite dumb) WinForms app to query and export interpolated tag values from Proficy Historian (using Proficy.Historian.ClientAccess.API) as CSV file.
 
+Might be helpful to someone else to query historical values.
+
+![Alt text](/preview.jpg?raw=true "Optional Title")
