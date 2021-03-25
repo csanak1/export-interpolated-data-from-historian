@@ -28,7 +28,7 @@ namespace ExportHistorianTagDataToCSV
             public Formula CalcFormula;
         }
 
-        private const string iHistSrv = "WHBC-DB-IH";
+        private const string iHistSrv = "yourHistorianServer";
 
         public string IHistSrv
         {

@@ -24,7 +24,7 @@ namespace ExportHistorianTagDataToCSV
 
         private void InitializeForm()
         {
-            lblServerName.Text = "yourHistorianServer";
+            lblServerName.Text = histDA.IHistSrv;
             rbSamplingType1.Checked = true;
             dtStartDateTime.MaxDate = DateTime.Now;
             dtEndDateTime.MaxDate = DateTime.Now;
