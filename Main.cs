@@ -254,5 +254,10 @@ namespace ExportHistorianTagDataToCSV
                 MessageBox.Show("File sucessfully saved.", "File saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            histDA.Disconnect();
+        }
     }
 }

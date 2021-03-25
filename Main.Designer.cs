@@ -30,18 +30,19 @@ namespace ExportHistorianTagDataToCSV
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnServerConn = new System.Windows.Forms.Button();
             this.lblServerName = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblFilteredTagCount = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.comboTagList = new System.Windows.Forms.ComboBox();
             this.btnFilterTag = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.tbTagFilterInput = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.numSampleNr = new System.Windows.Forms.NumericUpDown();
+            this.numIntervalSampleNr = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.comboSamplingTimeUnit = new System.Windows.Forms.ComboBox();
@@ -55,14 +56,11 @@ namespace ExportHistorianTagDataToCSV
             this.dtEndDateTime = new System.Windows.Forms.DateTimePicker();
             this.dtStartDateTime = new System.Windows.Forms.DateTimePicker();
             this.btnExport = new System.Windows.Forms.Button();
-            this.lblFilteredTagCount = new System.Windows.Forms.Label();
-            this.numIntervalSampleNr = new System.Windows.Forms.NumericUpDown();
-            this.numSampleNr = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numIntervalSampleNr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSampleNr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numIntervalSampleNr)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -111,6 +109,15 @@ namespace ExportHistorianTagDataToCSV
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tag Filter Options";
+            // 
+            // lblFilteredTagCount
+            // 
+            this.lblFilteredTagCount.AutoSize = true;
+            this.lblFilteredTagCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblFilteredTagCount.Location = new System.Drawing.Point(74, 81);
+            this.lblFilteredTagCount.Name = "lblFilteredTagCount";
+            this.lblFilteredTagCount.Size = new System.Drawing.Size(0, 9);
+            this.lblFilteredTagCount.TabIndex = 5;
             // 
             // label3
             // 
@@ -178,6 +185,30 @@ namespace ExportHistorianTagDataToCSV
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Query Options";
+            // 
+            // numSampleNr
+            // 
+            this.numSampleNr.Location = new System.Drawing.Point(242, 153);
+            this.numSampleNr.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numSampleNr.Name = "numSampleNr";
+            this.numSampleNr.Size = new System.Drawing.Size(86, 20);
+            this.numSampleNr.TabIndex = 14;
+            // 
+            // numIntervalSampleNr
+            // 
+            this.numIntervalSampleNr.Location = new System.Drawing.Point(128, 123);
+            this.numIntervalSampleNr.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numIntervalSampleNr.Name = "numIntervalSampleNr";
+            this.numIntervalSampleNr.Size = new System.Drawing.Size(91, 20);
+            this.numIntervalSampleNr.TabIndex = 13;
             // 
             // label11
             // 
@@ -313,39 +344,6 @@ namespace ExportHistorianTagDataToCSV
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
-            // lblFilteredTagCount
-            // 
-            this.lblFilteredTagCount.AutoSize = true;
-            this.lblFilteredTagCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblFilteredTagCount.Location = new System.Drawing.Point(74, 81);
-            this.lblFilteredTagCount.Name = "lblFilteredTagCount";
-            this.lblFilteredTagCount.Size = new System.Drawing.Size(0, 9);
-            this.lblFilteredTagCount.TabIndex = 5;
-            // 
-            // numIntervalSampleNr
-            // 
-            this.numIntervalSampleNr.Location = new System.Drawing.Point(128, 123);
-            this.numIntervalSampleNr.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numIntervalSampleNr.Name = "numIntervalSampleNr";
-            this.numIntervalSampleNr.Size = new System.Drawing.Size(91, 20);
-            this.numIntervalSampleNr.TabIndex = 13;
-            // 
-            // numSampleNr
-            // 
-            this.numSampleNr.Location = new System.Drawing.Point(242, 153);
-            this.numSampleNr.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numSampleNr.Name = "numSampleNr";
-            this.numSampleNr.Size = new System.Drawing.Size(86, 20);
-            this.numSampleNr.TabIndex = 14;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -356,16 +354,19 @@ namespace ExportHistorianTagDataToCSV
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Main";
             this.Text = "Historian Tag data export to CSV";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numIntervalSampleNr)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSampleNr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numIntervalSampleNr)).EndInit();
             this.ResumeLayout(false);
 
         }
