@@ -37,15 +37,21 @@ namespace ExportHistorianTagDataToCSV
             {
                 histDA.Connect();
 
-                lblServerName.ForeColor = Color.Green;
-                btnServerConn.Text = "Disconnect";
+                if (histDA.IsConnected)
+                {
+                    lblServerName.ForeColor = Color.Green;
+                    btnServerConn.Text = "Disconnect";
+                }
             }
             else
             {
-                lblServerName.ForeColor = Color.Red;
-                btnServerConn.Text = "Connect";
-
                 histDA.Disconnect();
+
+                if (!histDA.IsConnected)
+                {
+                    lblServerName.ForeColor = Color.Red;
+                    btnServerConn.Text = "Connect";
+                }
             }
         }
 
