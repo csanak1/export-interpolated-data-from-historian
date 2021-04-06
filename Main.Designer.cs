@@ -29,6 +29,7 @@ namespace ExportHistorianTagDataToCSV
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnServerConn = new System.Windows.Forms.Button();
@@ -56,6 +57,7 @@ namespace ExportHistorianTagDataToCSV
             this.dtEndDateTime = new System.Windows.Forms.DateTimePicker();
             this.dtStartDateTime = new System.Windows.Forms.DateTimePicker();
             this.btnExport = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -314,7 +316,7 @@ namespace ExportHistorianTagDataToCSV
             // 
             // dtEndDateTime
             // 
-            this.dtEndDateTime.CustomFormat = "yyyy.MM.dd. HH:m:ss";
+            this.dtEndDateTime.CustomFormat = "yyyy.MM.dd. HH:mm:ss";
             this.dtEndDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtEndDateTime.Location = new System.Drawing.Point(128, 70);
             this.dtEndDateTime.MaxDate = new System.DateTime(2022, 9, 1, 0, 0, 0, 0);
@@ -325,7 +327,7 @@ namespace ExportHistorianTagDataToCSV
             // 
             // dtStartDateTime
             // 
-            this.dtStartDateTime.CustomFormat = "yyyy.MM.dd. HH:m:ss";
+            this.dtStartDateTime.CustomFormat = "yyyy.MM.dd. HH:mm:ss";
             this.dtStartDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtStartDateTime.Location = new System.Drawing.Point(128, 43);
             this.dtStartDateTime.MaxDate = new System.DateTime(2022, 9, 1, 0, 0, 0, 0);
@@ -399,6 +401,7 @@ namespace ExportHistorianTagDataToCSV
         private System.Windows.Forms.Label lblFilteredTagCount;
         private System.Windows.Forms.NumericUpDown numSampleNr;
         private System.Windows.Forms.NumericUpDown numIntervalSampleNr;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

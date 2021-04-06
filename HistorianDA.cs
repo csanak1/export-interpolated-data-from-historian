@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -121,8 +122,8 @@ namespace ExportHistorianTagDataToCSV
                 var data = new TagData
                 {
                     TagName = tagName,
-                    Value = set[tagName].GetValue(i) == null ? string.Empty : set[tagName].GetValue(i).ToString(),
-                    Quality = set[tagName].GetQuality(i).PercentGood().ToString(),
+                    Value = set[tagName].GetValue(i) == null ? string.Empty : Convert.ToDecimal(set[tagName].GetValue(i)).ToString("N", CultureInfo.GetCultureInfo("hu-HU")), //the decimal separator is dot in the US or UK, etc. (decimal point), comma in Hungary, Germany, etc.
+                    Quality = set[tagName].GetQuality(i).ToString(),
                     TimeStamp = set[tagName].GetTime(i).ToString("yyyy.MM.dd. HH:mm:ss")
                 };
 
@@ -155,7 +156,7 @@ namespace ExportHistorianTagDataToCSV
                 });
             }
 
-            if (!sc.IsConnected())
+            if (!IsConnected)
             {
                 try
                 {
@@ -170,7 +171,7 @@ namespace ExportHistorianTagDataToCSV
 
         public void Disconnect()
         {
-            if (sc.IsConnected())
+            if (IsConnected)
             {
                 try
                 {
@@ -187,7 +188,10 @@ namespace ExportHistorianTagDataToCSV
 
         private void Dispose()
         {
-            ((IDisposable)sc).Dispose();
+            if (sc != null)
+            {
+                ((IDisposable)sc).Dispose();
+            }
         }
     }
 }

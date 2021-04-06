@@ -13,7 +13,7 @@ namespace ExportHistorianTagDataToCSV
 {
     public partial class Main : Form
     {
-        private HistorianDA histDA = new HistorianDA();
+        private readonly HistorianDA histDA = new HistorianDA();
 
         public Main()
         {
