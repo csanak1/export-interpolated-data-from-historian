@@ -29,7 +29,7 @@ namespace ExportHistorianTagDataToCSV
             public Formula CalcFormula;
         }
 
-        private const string iHistSrv = "yourHistorianServer";
+        private const string iHistSrv = "yourHistServer";
 
         public string IHistSrv
         {
@@ -93,7 +93,7 @@ namespace ExportHistorianTagDataToCSV
             }
         }
 
-        public DataTable QueryTagInterpolatedValues(DateTime queryStart, DateTime queryEnd, int samples, string tagName)
+        public DataTable QueryTagInterpolatedValues(DateTime queryStart, DateTime queryEnd, uint samples, string tagName)
         {
             //int totalSamples = 0;
 
@@ -103,7 +103,7 @@ namespace ExportHistorianTagDataToCSV
                 Connect();
 
             Historian.DataQueryParams query =
-                    new Historian.InterpolatedQuery(queryStart, queryEnd, (uint)samples, tagName) { Fields = Historian.DataFields.Time | Historian.DataFields.Value | Historian.DataFields.Quality };
+                    new Historian.InterpolatedQuery(queryStart, queryEnd, samples, tagName) { Fields = Historian.DataFields.Time | Historian.DataFields.Value | Historian.DataFields.Quality };
             Historian.DataSet set = new Historian.DataSet();
 
             query.Criteria.SamplingMode = Historian.DataCriteria.SamplingModeType.Interpolated;

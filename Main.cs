@@ -15,19 +15,60 @@ namespace ExportHistorianTagDataToCSV
     {
         private readonly HistorianDA histDA = new HistorianDA();
 
+        public class DateRange
+        {
+            public int Id { get; set; }
+            public DateTime From { get; set; }
+            public DateTime To { get; set; }
+        }
+
+        public List<DateRange> dateRangeList { get; set; }
+
+        public List<DateRange> DateRangeList
+        {
+            get { return dateRangeList; }
+            set { dateRangeList = value; }
+        }
+
+        public List<string> tagNameList { get; set; }
+
+        public List<string> TagNameList
+        {
+            get { return tagNameList; }
+            set { tagNameList = value; }
+        }
+
+        public class ComboBoxItem
+        {
+            public string Text { get; set; }
+            public object Value { get; set; }
+
+            public override string ToString()
+            {
+                return Text;
+            }
+        }
+
         public Main()
         {
             InitializeComponent();
-
             InitializeForm();
+
+            TagNameList = new List<string>();
+            DateRangeList = new List<DateRange>();
         }
 
         private void InitializeForm()
         {
+            groupFilterControls.Enabled = false;
+            groupQueryOptions.Enabled = false;
+            btnExport.Enabled = false;
             lblServerName.Text = histDA.IHistSrv;
             rbSamplingType1.Checked = true;
-            dtStartDateTime.MaxDate = DateTime.Now;
-            dtEndDateTime.MaxDate = DateTime.Now;
+            dtStartDateTime.MaxDate = DateTime.Now.Date;
+            dtEndDateTime.MaxDate = DateTime.Now.Date;
+            dtStartDateTime.Value = DateTime.Now.Date.AddDays(-1);
+            dtEndDateTime.Value = DateTime.Now.Date;
             comboSamplingTimeUnit.SelectedIndex = 0;
         }
 
@@ -41,6 +82,9 @@ namespace ExportHistorianTagDataToCSV
                 {
                     lblServerName.ForeColor = Color.Green;
                     btnServerConn.Text = "Disconnect";
+                    groupFilterControls.Enabled = true;
+                    groupQueryOptions.Enabled = true;
+                    btnExport.Enabled = true;
                 }
             }
             else
@@ -51,6 +95,9 @@ namespace ExportHistorianTagDataToCSV
                 {
                     lblServerName.ForeColor = Color.Red;
                     btnServerConn.Text = "Connect";
+                    groupFilterControls.Enabled = false;
+                    groupQueryOptions.Enabled = false;
+                    btnExport.Enabled = false;
                 }
             }
         }
@@ -71,9 +118,12 @@ namespace ExportHistorianTagDataToCSV
                     {
                         lblFilteredTagCount.Text = tagList.Count + " tag have been found";
                         comboTagList.DataSource = tagList.ToList();
+                        btnAddToQueryList.Enabled = true;
                     }
                     else
                     {
+                        btnAddToQueryList.Enabled = false;
+
                         MessageBox.Show("No tags have been found!");
                     }
                 }
@@ -125,70 +175,102 @@ namespace ExportHistorianTagDataToCSV
 
             try
             {
-                DateTime queryStartTime, queryEndTime;
-                int numOfSamples = 0;
-                string tagName;
+                uint numOfSamples = 0;
 
-                queryStartTime = dtStartDateTime.Value;
-                queryEndTime = dtEndDateTime.Value;
-                tagName = (string)comboTagList.SelectedValue;
-
-                if (!string.IsNullOrEmpty(tagName))
+                if(DateRangeList.Count > 0 && TagNameList.Count > 0)
                 {
-                    if (queryStartTime < queryEndTime)
+                    string samplingTimeUnit = comboSamplingTimeUnit.Text;
+
+                    if (!samplingTimeUnit.In("Minutes", "Hours"))
+                        throw new InvalidOperationException("Sampling unit is not set!");
+
+                    int numIntervalSamples = (int)numIntervalSampleNr.Value;
+
+                    if (numIntervalSamples != 0)
                     {
                         if (rbSamplingType1.Checked)
                         {
-                            string samplingTimeUnit = comboSamplingTimeUnit.Text;
-
-                            if (!samplingTimeUnit.In("Minutes", "Hours")) return;
-
-                            numOfSamples = (int)numIntervalSampleNr.Value;
-
-                            if (numOfSamples == 0)
+                            foreach (var dateInterval in DateRangeList)
                             {
-                                MessageBox.Show("Please specify the number of the samples!");
+                                if (samplingTimeUnit == "Minutes")
+                                {
+                                    numOfSamples = (uint)(numIntervalSamples * (dateInterval.To - dateInterval.From).TotalMinutes);
+                                }
 
-                                return;
+                                if (samplingTimeUnit == "Hours")
+                                {
+                                    numOfSamples = (uint)(numIntervalSamples * (dateInterval.To - dateInterval.From).TotalHours);
+                                }
                             }
 
-                            if (samplingTimeUnit == "Minutes")
+                            if (numOfSamples < 16777216)
                             {
-                                numOfSamples = (int)(numOfSamples * (queryEndTime - queryStartTime).TotalMinutes);
-                            }
+                                foreach (string tagName in TagNameList)
+                                {
+                                    var tagData = new DataTable();
 
-                            if (samplingTimeUnit == "Hours")
+                                    foreach (var dateInterval in DateRangeList)
+                                    {
+                                        if (!samplingTimeUnit.In("Minutes", "Hours")) return;
+
+                                        numOfSamples = (uint)numIntervalSampleNr.Value;
+
+                                        if (numOfSamples == 0)
+                                        {
+                                            MessageBox.Show("Please specify the number of the samples!");
+
+                                            return;
+                                        }
+
+                                        if (samplingTimeUnit == "Minutes")
+                                        {
+                                            numOfSamples = (uint)(numIntervalSamples * (dateInterval.To - dateInterval.From).TotalMinutes);
+                                        }
+
+                                        if (samplingTimeUnit == "Hours")
+                                        {
+                                            numOfSamples = (uint)(numIntervalSamples * (dateInterval.To - dateInterval.From).TotalHours);
+                                        }
+
+                                        tagData.Merge(await InterpolatedDataQueryAsync(dateInterval.From, dateInterval.To, numOfSamples, tagName));
+                                    }
+
+                                    ConvertAndSaveToCSV(tagData, tagName);
+                                }
+                            }
+                            else
                             {
-                                numOfSamples = (int)(numOfSamples * (queryEndTime - queryStartTime).TotalHours);
+                                MessageBox.Show("The number of samles are too high, over 16 million! Change the query interval shorter or the number of smaples lower.");
                             }
                         }
-
-                        if (rbSamplingType2.Checked)
-                        {
-                            numOfSamples = (int)numSampleNr.Value;
-
-                            if (numOfSamples == 0)
-                            {
-                                MessageBox.Show("Please specify the number of the samples!");
-
-                                return;
-                            }
-                        }
-
-                        var tagData = await InterpolatedDataQueryAsync(queryStartTime, queryEndTime, numOfSamples, tagName);
-
-                        ConvertAndSaveToCSV(tagData);
                     }
                     else
                     {
-                        MessageBox.Show("Please specify the query start and end dates correctly!");
+                        MessageBox.Show("The number of samles is zero!");
+                    }
 
-                        return;
+                    if (rbSamplingType2.Checked)
+                    {
+                        numOfSamples = (uint)numSampleNr.Value;
+
+                        if (numOfSamples != 0 && numOfSamples < 16777216)
+                        {
+                            foreach (string tagName in TagNameList)
+                            { 
+                                var tagData = await InterpolatedDataQueryAsync(DateRangeList[0].From, DateRangeList[0].To, numOfSamples, tagName);
+
+                                ConvertAndSaveToCSV(tagData, tagName);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please specify the number of the samples!");
+                        }
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Please specify a tag!");
+                    MessageBox.Show("Please specify at least one tag and one date interval!");
                 }
             }
             catch(Exception ex)
@@ -216,7 +298,7 @@ namespace ExportHistorianTagDataToCSV
             }
         }
 
-        private async Task<DataTable> InterpolatedDataQueryAsync(DateTime st, DateTime et, int samples, string tagName)
+        private async Task<DataTable> InterpolatedDataQueryAsync(DateTime st, DateTime et, uint samples, string tagName)
         {
             try
             {
@@ -230,14 +312,15 @@ namespace ExportHistorianTagDataToCSV
             }
         }
 
-        private void ConvertAndSaveToCSV(DataTable tagData)
+        private void ConvertAndSaveToCSV(DataTable tagData, string tagName)
         {
             const string header = "Tagname;Value;Quality;Timestamp";
             const string filter = "CSV file (*.csv)|*.csv| All Files (*.*)|*.*";
 
             SaveFileDialog saveFileDialog1 = new SaveFileDialog
             {
-                Filter = filter
+                Filter = filter,
+                FileName = tagName
             };
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -264,6 +347,164 @@ namespace ExportHistorianTagDataToCSV
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             histDA.Disconnect();
+        }
+
+        private void btnAddToQueryList_Click(object sender, EventArgs e)
+        {
+            string tagName = (string)comboTagList.SelectedValue;
+
+            if (!string.IsNullOrEmpty(tagName))
+            {
+                if (!TagNameList.Contains(tagName))
+                {
+                    TagNameList.Add(tagName);
+
+                    comboQueryTagList.DataSource = new BindingSource(TagNameList, null);
+
+                    if (TagNameList.Count > 0)
+                    {
+                        btnRemoveFromQueryList.Enabled = true;
+                    }
+
+                    lblQueryTagCount.Text = TagNameList.Count.ToString() + " tag(s) have been added";
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please specify a tag!");
+            }
+        }
+
+        private void btnRemoveFromQueryList_Click(object sender, EventArgs e)
+        {
+            if (comboQueryTagList.SelectedIndex > -1)
+            {
+                string tagName = (string)comboQueryTagList.SelectedValue;
+
+                if (!string.IsNullOrEmpty(tagName))
+                {
+                    if (TagNameList.Contains(tagName))
+                    {
+                        TagNameList.Remove(tagName);
+
+                        comboQueryTagList.DataSource = new BindingSource(TagNameList, null);
+
+                        if (TagNameList.Count == 0)
+                        {
+                            comboQueryTagList.Text = string.Empty;
+                            btnRemoveFromQueryList.Enabled = false;
+                        }
+
+                        lblQueryTagCount.Text = "Query tag count: " + TagNameList.Count.ToString();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a tag from the list!");
+                }
+            }
+        }
+
+        private void btnAddIntervalToQueryList_Click(object sender, EventArgs e)
+        {
+            DateTime queryStartTime, queryEndTime;
+
+            queryStartTime = dtStartDateTime.Value;
+            queryEndTime = dtEndDateTime.Value;
+
+            if(queryStartTime < queryEndTime)
+            {
+                if(DateRangeList.Count == 0 || !IsThereOverlap(DateRangeList, queryStartTime, queryEndTime))
+                {
+                    var dateRange = new DateRange()
+                    {
+                        Id = DateRangeList.Count == 0 ? 1 : DateRangeList.Max(x => x.Id) + 1,
+                        From = queryStartTime,
+                        To = queryEndTime
+                    };
+
+                    DateRangeList.Add(dateRange);
+
+                    comboQueryDateRangeList.Items.Clear();
+
+                    foreach (DateRange dr in DateRangeList.OrderBy(x => x.From))
+                    {
+                        var queryDateRangeItem = new ComboBoxItem
+                        {
+                            Value = dr.Id,
+                            Text = $"{dr.From} - {dr.To}"
+                        };
+
+                        comboQueryDateRangeList.Items.Add(queryDateRangeItem);
+                    }
+
+                    comboQueryDateRangeList.SelectedIndex = 0;
+                    lblFilteredDateIntervalCount.Text = "Date range count: " + DateRangeList.Count.ToString();
+                    btnRemoveIntervalFromQueryList.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("There are overlapping dates! Please check the selected date interval.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please specify the query start and end dates correctly! Start date must be smaller than end date.");
+            }
+        }
+
+        private void btnRemoveIntervalFromQueryList_Click(object sender, EventArgs e)
+        {
+            if (comboQueryDateRangeList.SelectedIndex > -1)
+            {
+                var dateIntervalId = (ComboBoxItem)comboQueryDateRangeList.SelectedItem;
+
+                DateRangeList.RemoveAll(x => x.Id == (int)dateIntervalId.Value);
+
+                comboQueryDateRangeList.Items.Clear();
+
+                if (DateRangeList.Count > 0)
+                {
+                    foreach (DateRange dr in DateRangeList.OrderBy(x => x.From))
+                    {
+                        var queryDateRangeItem = new ComboBoxItem
+                        {
+                            Value = dr.Id,
+                            Text = $"{dr.From} - {dr.To}"
+                        };
+
+                        comboQueryDateRangeList.Items.Add(queryDateRangeItem);
+                    }
+
+                    comboQueryDateRangeList.SelectedIndex = 0;
+                }
+                else
+                {
+                    comboQueryDateRangeList.Text = string.Empty;
+                    btnRemoveIntervalFromQueryList.Enabled = false;
+                }
+
+                lblFilteredDateIntervalCount.Text = "Date range count: " + DateRangeList.Count.ToString();
+            }
+        }
+
+        public bool IsThereOverlap(List<DateRange> dateList, DateTime start, DateTime end)
+        {
+            foreach(DateRange dr in dateList.OrderBy(x => x.From))
+            {
+                return Min(dr.From, dr.To) < Max(start, end) && Max(dr.From, dr.To) > Min(start, end);
+            }
+            return false;
+        }
+
+        public static DateTime Max(DateTime d1, DateTime d2)
+        {
+            return d1 > d2 ? d1 : d2;
+        }
+
+        public static DateTime Min(DateTime d1, DateTime d2)
+        {
+            return d2 > d1 ? d1 : d2;
         }
     }
 }

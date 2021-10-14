@@ -34,14 +34,25 @@ namespace ExportHistorianTagDataToCSV
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnServerConn = new System.Windows.Forms.Button();
             this.lblServerName = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupFilterControls = new System.Windows.Forms.GroupBox();
+            this.lblQueryListTagCount = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnRemoveFromQueryList = new System.Windows.Forms.Button();
+            this.comboQueryTagList = new System.Windows.Forms.ComboBox();
+            this.btnAddToQueryList = new System.Windows.Forms.Button();
             this.lblFilteredTagCount = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.comboTagList = new System.Windows.Forms.ComboBox();
             this.btnFilterTag = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.tbTagFilterInput = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupQueryOptions = new System.Windows.Forms.GroupBox();
+            this.lblQueryListDateRangeCount = new System.Windows.Forms.Label();
+            this.lblSeparator = new System.Windows.Forms.Label();
+            this.btnRemoveIntervalFromQueryList = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboQueryDateRangeList = new System.Windows.Forms.ComboBox();
+            this.btnAddIntervalToQueryList = new System.Windows.Forms.Button();
             this.numSampleNr = new System.Windows.Forms.NumericUpDown();
             this.numIntervalSampleNr = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
@@ -58,9 +69,11 @@ namespace ExportHistorianTagDataToCSV
             this.dtStartDateTime = new System.Windows.Forms.DateTimePicker();
             this.btnExport = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lblQueryTagCount = new System.Windows.Forms.Label();
+            this.lblFilteredDateIntervalCount = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.groupFilterControls.SuspendLayout();
+            this.groupQueryOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSampleNr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numIntervalSampleNr)).BeginInit();
             this.SuspendLayout();
@@ -97,20 +110,75 @@ namespace ExportHistorianTagDataToCSV
             this.lblServerName.TabIndex = 0;
             this.lblServerName.Text = "Historian Server Name";
             // 
-            // groupBox2
+            // groupFilterControls
             // 
-            this.groupBox2.Controls.Add(this.lblFilteredTagCount);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.comboTagList);
-            this.groupBox2.Controls.Add(this.btnFilterTag);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.tbTagFilterInput);
-            this.groupBox2.Location = new System.Drawing.Point(13, 64);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(350, 100);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Tag Filter Options";
+            this.groupFilterControls.Controls.Add(this.lblQueryTagCount);
+            this.groupFilterControls.Controls.Add(this.lblQueryListTagCount);
+            this.groupFilterControls.Controls.Add(this.label1);
+            this.groupFilterControls.Controls.Add(this.btnRemoveFromQueryList);
+            this.groupFilterControls.Controls.Add(this.comboQueryTagList);
+            this.groupFilterControls.Controls.Add(this.btnAddToQueryList);
+            this.groupFilterControls.Controls.Add(this.lblFilteredTagCount);
+            this.groupFilterControls.Controls.Add(this.label3);
+            this.groupFilterControls.Controls.Add(this.comboTagList);
+            this.groupFilterControls.Controls.Add(this.btnFilterTag);
+            this.groupFilterControls.Controls.Add(this.label2);
+            this.groupFilterControls.Controls.Add(this.tbTagFilterInput);
+            this.groupFilterControls.Location = new System.Drawing.Point(13, 64);
+            this.groupFilterControls.Name = "groupFilterControls";
+            this.groupFilterControls.Size = new System.Drawing.Size(350, 165);
+            this.groupFilterControls.TabIndex = 1;
+            this.groupFilterControls.TabStop = false;
+            this.groupFilterControls.Text = "Tag Filter Options";
+            // 
+            // lblQueryListTagCount
+            // 
+            this.lblQueryListTagCount.AutoSize = true;
+            this.lblQueryListTagCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblQueryListTagCount.Location = new System.Drawing.Point(72, 134);
+            this.lblQueryListTagCount.Name = "lblQueryListTagCount";
+            this.lblQueryListTagCount.Size = new System.Drawing.Size(0, 9);
+            this.lblQueryListTagCount.TabIndex = 10;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.Location = new System.Drawing.Point(5, 114);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(64, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Query list:";
+            // 
+            // btnRemoveFromQueryList
+            // 
+            this.btnRemoveFromQueryList.Enabled = false;
+            this.btnRemoveFromQueryList.Location = new System.Drawing.Point(200, 136);
+            this.btnRemoveFromQueryList.Name = "btnRemoveFromQueryList";
+            this.btnRemoveFromQueryList.Size = new System.Drawing.Size(128, 23);
+            this.btnRemoveFromQueryList.TabIndex = 8;
+            this.btnRemoveFromQueryList.Text = "Remove from query list";
+            this.btnRemoveFromQueryList.UseVisualStyleBackColor = true;
+            this.btnRemoveFromQueryList.Click += new System.EventHandler(this.btnRemoveFromQueryList_Click);
+            // 
+            // comboQueryTagList
+            // 
+            this.comboQueryTagList.FormattingEnabled = true;
+            this.comboQueryTagList.Location = new System.Drawing.Point(74, 110);
+            this.comboQueryTagList.Name = "comboQueryTagList";
+            this.comboQueryTagList.Size = new System.Drawing.Size(254, 21);
+            this.comboQueryTagList.TabIndex = 7;
+            // 
+            // btnAddToQueryList
+            // 
+            this.btnAddToQueryList.Enabled = false;
+            this.btnAddToQueryList.Location = new System.Drawing.Point(200, 81);
+            this.btnAddToQueryList.Name = "btnAddToQueryList";
+            this.btnAddToQueryList.Size = new System.Drawing.Size(128, 23);
+            this.btnAddToQueryList.TabIndex = 6;
+            this.btnAddToQueryList.Text = "Add to query list";
+            this.btnAddToQueryList.UseVisualStyleBackColor = true;
+            this.btnAddToQueryList.Click += new System.EventHandler(this.btnAddToQueryList_Click);
             // 
             // lblFilteredTagCount
             // 
@@ -118,13 +186,14 @@ namespace ExportHistorianTagDataToCSV
             this.lblFilteredTagCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblFilteredTagCount.Location = new System.Drawing.Point(74, 81);
             this.lblFilteredTagCount.Name = "lblFilteredTagCount";
-            this.lblFilteredTagCount.Size = new System.Drawing.Size(0, 9);
+            this.lblFilteredTagCount.Size = new System.Drawing.Size(39, 9);
             this.lblFilteredTagCount.TabIndex = 5;
+            //this.lblFilteredTagCount.Text = "texttextext";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 58);
+            this.label3.Location = new System.Drawing.Point(17, 59);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 4;
@@ -153,9 +222,9 @@ namespace ExportHistorianTagDataToCSV
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(17, 23);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 13);
+            this.label2.Size = new System.Drawing.Size(51, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Tag Filter:";
+            this.label2.Text = "Tag filter:";
             // 
             // tbTagFilterInput
             // 
@@ -165,32 +234,95 @@ namespace ExportHistorianTagDataToCSV
             this.tbTagFilterInput.TabIndex = 0;
             this.tbTagFilterInput.Text = "BC.**";
             // 
-            // groupBox3
+            // groupQueryOptions
             // 
-            this.groupBox3.Controls.Add(this.numSampleNr);
-            this.groupBox3.Controls.Add(this.numIntervalSampleNr);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.comboSamplingTimeUnit);
-            this.groupBox3.Controls.Add(this.rbSamplingType2);
-            this.groupBox3.Controls.Add(this.rbSamplingType1);
-            this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.dtEndDateTime);
-            this.groupBox3.Controls.Add(this.dtStartDateTime);
-            this.groupBox3.Location = new System.Drawing.Point(13, 171);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(350, 192);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Query Options";
+            this.groupQueryOptions.Controls.Add(this.lblFilteredDateIntervalCount);
+            this.groupQueryOptions.Controls.Add(this.lblQueryListDateRangeCount);
+            this.groupQueryOptions.Controls.Add(this.lblSeparator);
+            this.groupQueryOptions.Controls.Add(this.btnRemoveIntervalFromQueryList);
+            this.groupQueryOptions.Controls.Add(this.label4);
+            this.groupQueryOptions.Controls.Add(this.comboQueryDateRangeList);
+            this.groupQueryOptions.Controls.Add(this.btnAddIntervalToQueryList);
+            this.groupQueryOptions.Controls.Add(this.numSampleNr);
+            this.groupQueryOptions.Controls.Add(this.numIntervalSampleNr);
+            this.groupQueryOptions.Controls.Add(this.label11);
+            this.groupQueryOptions.Controls.Add(this.label10);
+            this.groupQueryOptions.Controls.Add(this.comboSamplingTimeUnit);
+            this.groupQueryOptions.Controls.Add(this.rbSamplingType2);
+            this.groupQueryOptions.Controls.Add(this.rbSamplingType1);
+            this.groupQueryOptions.Controls.Add(this.label9);
+            this.groupQueryOptions.Controls.Add(this.label8);
+            this.groupQueryOptions.Controls.Add(this.label7);
+            this.groupQueryOptions.Controls.Add(this.label6);
+            this.groupQueryOptions.Controls.Add(this.label5);
+            this.groupQueryOptions.Controls.Add(this.dtEndDateTime);
+            this.groupQueryOptions.Controls.Add(this.dtStartDateTime);
+            this.groupQueryOptions.Location = new System.Drawing.Point(13, 234);
+            this.groupQueryOptions.Name = "groupQueryOptions";
+            this.groupQueryOptions.Size = new System.Drawing.Size(350, 273);
+            this.groupQueryOptions.TabIndex = 2;
+            this.groupQueryOptions.TabStop = false;
+            this.groupQueryOptions.Text = "Query Options";
+            // 
+            // lblQueryListDateRangeCount
+            // 
+            this.lblQueryListDateRangeCount.AutoSize = true;
+            this.lblQueryListDateRangeCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblQueryListDateRangeCount.Location = new System.Drawing.Point(96, 152);
+            this.lblQueryListDateRangeCount.Name = "lblQueryListDateRangeCount";
+            this.lblQueryListDateRangeCount.Size = new System.Drawing.Size(0, 9);
+            this.lblQueryListDateRangeCount.TabIndex = 11;
+            // 
+            // lblSeparator
+            // 
+            this.lblSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblSeparator.Location = new System.Drawing.Point(15, 185);
+            this.lblSeparator.Name = "lblSeparator";
+            this.lblSeparator.Size = new System.Drawing.Size(320, 2);
+            this.lblSeparator.TabIndex = 17;
+            // 
+            // btnRemoveIntervalFromQueryList
+            // 
+            this.btnRemoveIntervalFromQueryList.Enabled = false;
+            this.btnRemoveIntervalFromQueryList.Location = new System.Drawing.Point(200, 152);
+            this.btnRemoveIntervalFromQueryList.Name = "btnRemoveIntervalFromQueryList";
+            this.btnRemoveIntervalFromQueryList.Size = new System.Drawing.Size(128, 23);
+            this.btnRemoveIntervalFromQueryList.TabIndex = 16;
+            this.btnRemoveIntervalFromQueryList.Text = "Remove interval";
+            this.btnRemoveIntervalFromQueryList.UseVisualStyleBackColor = true;
+            this.btnRemoveIntervalFromQueryList.Click += new System.EventHandler(this.btnRemoveIntervalFromQueryList_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label4.Location = new System.Drawing.Point(5, 129);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(90, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Date intervals:";
+            // 
+            // comboQueryDateRangeList
+            // 
+            this.comboQueryDateRangeList.FormattingEnabled = true;
+            this.comboQueryDateRangeList.Location = new System.Drawing.Point(98, 125);
+            this.comboQueryDateRangeList.Name = "comboQueryDateRangeList";
+            this.comboQueryDateRangeList.Size = new System.Drawing.Size(230, 21);
+            this.comboQueryDateRangeList.TabIndex = 10;
+            // 
+            // btnAddIntervalToQueryList
+            // 
+            this.btnAddIntervalToQueryList.Location = new System.Drawing.Point(200, 96);
+            this.btnAddIntervalToQueryList.Name = "btnAddIntervalToQueryList";
+            this.btnAddIntervalToQueryList.Size = new System.Drawing.Size(128, 23);
+            this.btnAddIntervalToQueryList.TabIndex = 10;
+            this.btnAddIntervalToQueryList.Text = "Add interval";
+            this.btnAddIntervalToQueryList.UseVisualStyleBackColor = true;
+            this.btnAddIntervalToQueryList.Click += new System.EventHandler(this.btnAddIntervalToQueryList_Click);
             // 
             // numSampleNr
             // 
-            this.numSampleNr.Location = new System.Drawing.Point(242, 153);
+            this.numSampleNr.Location = new System.Drawing.Point(242, 243);
             this.numSampleNr.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -202,7 +334,7 @@ namespace ExportHistorianTagDataToCSV
             // 
             // numIntervalSampleNr
             // 
-            this.numIntervalSampleNr.Location = new System.Drawing.Point(128, 123);
+            this.numIntervalSampleNr.Location = new System.Drawing.Point(128, 213);
             this.numIntervalSampleNr.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -215,7 +347,7 @@ namespace ExportHistorianTagDataToCSV
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(128, 154);
+            this.label11.Location = new System.Drawing.Point(128, 244);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(100, 13);
             this.label11.TabIndex = 12;
@@ -225,7 +357,7 @@ namespace ExportHistorianTagDataToCSV
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label10.Location = new System.Drawing.Point(225, 124);
+            this.label10.Location = new System.Drawing.Point(225, 214);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(13, 17);
             this.label10.TabIndex = 11;
@@ -238,7 +370,7 @@ namespace ExportHistorianTagDataToCSV
             this.comboSamplingTimeUnit.Items.AddRange(new object[] {
             "Minutes",
             "Hours"});
-            this.comboSamplingTimeUnit.Location = new System.Drawing.Point(242, 123);
+            this.comboSamplingTimeUnit.Location = new System.Drawing.Point(242, 213);
             this.comboSamplingTimeUnit.Name = "comboSamplingTimeUnit";
             this.comboSamplingTimeUnit.Size = new System.Drawing.Size(86, 21);
             this.comboSamplingTimeUnit.TabIndex = 10;
@@ -247,7 +379,7 @@ namespace ExportHistorianTagDataToCSV
             // rbSamplingType2
             // 
             this.rbSamplingType2.AutoSize = true;
-            this.rbSamplingType2.Location = new System.Drawing.Point(23, 151);
+            this.rbSamplingType2.Location = new System.Drawing.Point(23, 241);
             this.rbSamplingType2.Name = "rbSamplingType2";
             this.rbSamplingType2.Size = new System.Drawing.Size(74, 17);
             this.rbSamplingType2.TabIndex = 8;
@@ -259,7 +391,7 @@ namespace ExportHistorianTagDataToCSV
             // rbSamplingType1
             // 
             this.rbSamplingType1.AutoSize = true;
-            this.rbSamplingType1.Location = new System.Drawing.Point(23, 124);
+            this.rbSamplingType1.Location = new System.Drawing.Point(23, 214);
             this.rbSamplingType1.Name = "rbSamplingType1";
             this.rbSamplingType1.Size = new System.Drawing.Size(74, 17);
             this.rbSamplingType1.TabIndex = 7;
@@ -271,7 +403,7 @@ namespace ExportHistorianTagDataToCSV
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(7, 105);
+            this.label9.Location = new System.Drawing.Point(13, 195);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(53, 13);
             this.label9.TabIndex = 6;
@@ -280,7 +412,7 @@ namespace ExportHistorianTagDataToCSV
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(20, 72);
+            this.label8.Location = new System.Drawing.Point(17, 72);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(55, 13);
             this.label8.TabIndex = 5;
@@ -323,7 +455,7 @@ namespace ExportHistorianTagDataToCSV
             this.dtEndDateTime.Name = "dtEndDateTime";
             this.dtEndDateTime.Size = new System.Drawing.Size(200, 20);
             this.dtEndDateTime.TabIndex = 1;
-            this.dtEndDateTime.Value = new System.DateTime(2021, 3, 25, 0, 0, 0, 0);
+            this.dtEndDateTime.Value = new System.DateTime(2021, 10, 13, 0, 0, 0, 0);
             // 
             // dtStartDateTime
             // 
@@ -334,11 +466,11 @@ namespace ExportHistorianTagDataToCSV
             this.dtStartDateTime.Name = "dtStartDateTime";
             this.dtStartDateTime.Size = new System.Drawing.Size(200, 20);
             this.dtStartDateTime.TabIndex = 0;
-            this.dtStartDateTime.Value = new System.DateTime(2021, 3, 25, 0, 0, 0, 0);
+            this.dtStartDateTime.Value = new System.DateTime(2021, 10, 13, 0, 0, 0, 0);
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(13, 386);
+            this.btnExport.Location = new System.Drawing.Point(13, 513);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(350, 37);
             this.btnExport.TabIndex = 5;
@@ -346,15 +478,36 @@ namespace ExportHistorianTagDataToCSV
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
+            // lblQueryTagCount
+            // 
+            this.lblQueryTagCount.AutoSize = true;
+            this.lblQueryTagCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblQueryTagCount.Location = new System.Drawing.Point(72, 134);
+            this.lblQueryTagCount.Name = "lblQueryTagCount";
+            this.lblQueryTagCount.Size = new System.Drawing.Size(39, 9);
+            this.lblQueryTagCount.TabIndex = 11;
+            //this.lblQueryTagCount.Text = "texttextext";
+            // 
+            // lblFilteredDateIntervalCount
+            // 
+            this.lblFilteredDateIntervalCount.AutoSize = true;
+            this.lblFilteredDateIntervalCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblFilteredDateIntervalCount.Location = new System.Drawing.Point(96, 152);
+            this.lblFilteredDateIntervalCount.Name = "lblFilteredDateIntervalCount";
+            this.lblFilteredDateIntervalCount.Size = new System.Drawing.Size(39, 9);
+            this.lblFilteredDateIntervalCount.TabIndex = 18;
+            //this.lblFilteredDateIntervalCount.Text = "texttextext";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(375, 436);
+            this.ClientSize = new System.Drawing.Size(375, 559);
             this.Controls.Add(this.btnExport);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupQueryOptions);
+            this.Controls.Add(this.groupFilterControls);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -363,10 +516,10 @@ namespace ExportHistorianTagDataToCSV
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            this.groupFilterControls.ResumeLayout(false);
+            this.groupFilterControls.PerformLayout();
+            this.groupQueryOptions.ResumeLayout(false);
+            this.groupQueryOptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSampleNr)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numIntervalSampleNr)).EndInit();
             this.ResumeLayout(false);
@@ -378,13 +531,13 @@ namespace ExportHistorianTagDataToCSV
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnServerConn;
         private System.Windows.Forms.Label lblServerName;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupFilterControls;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboTagList;
         private System.Windows.Forms.Button btnFilterTag;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbTagFilterInput;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupQueryOptions;
         private System.Windows.Forms.ComboBox comboSamplingTimeUnit;
         private System.Windows.Forms.RadioButton rbSamplingType2;
         private System.Windows.Forms.RadioButton rbSamplingType1;
@@ -402,6 +555,19 @@ namespace ExportHistorianTagDataToCSV
         private System.Windows.Forms.NumericUpDown numSampleNr;
         private System.Windows.Forms.NumericUpDown numIntervalSampleNr;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnAddToQueryList;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnRemoveFromQueryList;
+        private System.Windows.Forms.ComboBox comboQueryTagList;
+        private System.Windows.Forms.ComboBox comboQueryDateRangeList;
+        private System.Windows.Forms.Button btnAddIntervalToQueryList;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnRemoveIntervalFromQueryList;
+        private System.Windows.Forms.Label lblSeparator;
+        private System.Windows.Forms.Label lblQueryListTagCount;
+        private System.Windows.Forms.Label lblQueryListDateRangeCount;
+        private System.Windows.Forms.Label lblQueryTagCount;
+        private System.Windows.Forms.Label lblFilteredDateIntervalCount;
     }
 }
 
